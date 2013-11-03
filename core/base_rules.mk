@@ -110,14 +110,13 @@ else
 endif
 endif
 
-LOCAL_MODULE_PATH := $(strip $(LOCAL_MODULE_PATH))
-ifeq ($(LOCAL_MODULE_PATH),)
-  LOCAL_MODULE_PATH := $($(my_prefix)OUT$(partition_tag)_$(LOCAL_MODULE_CLASS))
-  ifeq ($(strip $(LOCAL_MODULE_PATH)),)
-    $(error $(LOCAL_PATH): unhandled LOCAL_MODULE_CLASS "$(LOCAL_MODULE_CLASS)")
+install_path_var := $(my_prefix)OUT$(partition_tag)_$(LOCAL_MODULE_CLASS)
+  ifeq (true,$(LOCAL_PRIVILEGED_MODULE))
+    install_path_var := $(install_path_var)_PRIVILEGED
   endif
+
 endif
-endif # not LOCAL_UNINSTALLABLE_MODULE
+# not LOCAL_UNINSTALLABLE_MODULE
 
 ifneq ($(strip $(LOCAL_BUILT_MODULE)$(LOCAL_INSTALLED_MODULE)),)
   $(error $(LOCAL_PATH): LOCAL_BUILT_MODULE and LOCAL_INSTALLED_MODULE must not be defined by component makefiles)
